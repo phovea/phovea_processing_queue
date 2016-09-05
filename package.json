@@ -1,0 +1,32 @@
+{
+  "name": "caleydo_processing_queue",
+  "description": "Process long-running tasks in the background using Celery.",
+  "version": "0.0.1",
+  "license" : "SEE LICENSE IN LICENSE",
+  "repository": "Caleydo/caleydo_processing_queue",
+  "dependencies": {
+  },
+  "peerDependencies": {
+    "caleydo_server": "*",
+    "caleydo_data_redis": "*"
+  },
+  "caleydo": {
+    "type": "plugin",
+    "category": "python_data",
+    "plugins": {
+      "python": []
+    },
+    "dependencies": {
+      "python": {
+        "celery[redis,auth,msgpack]": "==4.0.0rc3"
+      }
+    },
+    "scripts": {
+      "____pre_start": "sudo service redis-server start",
+      "____pre_start_redhat": "sudo service redis start"
+    }
+  },
+  "publishConfig": {
+    "registry": "http://registry.caleydo.org/"
+  }
+}
