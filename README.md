@@ -9,7 +9,7 @@ Installation
 [Set up a virtual machine using Vagrant](http://www.caleydo.org/documentation/vagrant/) and run these commands inside the virtual machine:
 
 ```bash
-./manage.sh clone Caleydo/caleydo_server
+./manage.sh clone Caleydo/caleydo_processing_queue
 ./manage.sh resolve
 ```
 
@@ -18,7 +18,7 @@ If you want this plugin to be dynamically resolved as part of another applicatio
 ```json
 {
   "peerDependencies": {
-    "caleydo_server": "*"
+    "caleydo_processing_queue": "*"
   }
 }
 ```
