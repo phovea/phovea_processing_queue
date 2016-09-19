@@ -18,7 +18,7 @@
     },
     "dependencies": {
       "python": {
-        "celery[redis,auth,msgpack]": "==4.0.0rc3"
+        "celery[redis,auth,msgpack]": "==4.0.0rc4"
       }
     },
     "scripts": {
