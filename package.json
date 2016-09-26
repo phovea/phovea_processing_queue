@@ -14,17 +14,26 @@
     "type": "plugin",
     "category": "python_data",
     "plugins": {
-      "python": []
+      "python": [
+        {
+          "type": "namespace",
+          "id": "caleydo_processing",
+          "file": "processing",
+          "namespace": "/api/processing"
+        },
+        {
+          "type": "processing-task",
+          "id": "caleydo_processing_task",
+          "file": "tasks"
+        }
+      ]
     },
     "dependencies": {
       "python": {
         "celery[redis,auth,msgpack]": "==4.0.0rc4"
       }
     },
-    "scripts": {
-      "____pre_start": "sudo service redis-server start",
-      "____pre_start_redhat": "sudo service redis start"
-    }
+    "scripts": {}
   },
   "publishConfig": {
     "registry": "http://registry.caleydo.org/"
