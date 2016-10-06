@@ -1,5 +1,48 @@
 {
-  "host": "localhost",
-  "port": 6379,
-  "db": 5
+  "celery": {
+    "host": "localhost",
+    "port": 6379,
+    "db": 5,
+    "broker": "redis://${host}:${port}/${db}",
+    "backend": "redis://${host}:${port}/${db}",
+    "expires": 3600
+  },
+  "logging": {
+    "version": 1,
+    "formatters": {
+      "simple": {
+        "format": "%(asctime)s %(levelname)s %(name)s: %(message)s",
+        "datefmt": "%H:%M:%S"
+      },
+      "line": {
+        "format": "%(asctime)s %(levelname)s %(name)s(%(pathname)s:%(lineno)s): %(message)s"
+      }
+    },
+    "handlers": {
+      "console": {
+        "class": "logging.StreamHandler",
+        "level": "INFO",
+        "formatter": "simple",
+        "stream": "ext://sys.stdout"
+      },
+      "file": {
+        "class": "logging.handlers.TimedRotatingFileHandler",
+        "level": "DEBUG",
+        "formatter": "line",
+        "filename": "logs/caleydo_celery.log",
+        "when": "midnight",
+        "backupCount": 7
+      }
+    },
+    "loggers": {
+
+    },
+    "root": {
+      "level": "DEBUG",
+      "handlers": [
+        "console",
+        "file"
+      ]
+    }
+  }
 }

@@ -1,7 +1,7 @@
 __author__ = 'Holger Stitz'
 
 
-from flask import Flask, request, abort
+from flask import Flask
 from caleydo_server.util import jsonify
 
 from caleydo_processing_queue.celery_app import app as celery_app
@@ -26,7 +26,7 @@ def hello_world(name):
 @app.route('/add/<x>/<y>', methods=['GET'])
 def add(x, y):
   import tasks
-  res = tasks.add.apply_async((x, y))
+  res = tasks.add.delay(x, y)
   return "<a href=\"/api/processing/res/" + res.id + "\">" + res.id + "</a>"
 
 @app.route('/res/<task_id>', methods=['GET'])
