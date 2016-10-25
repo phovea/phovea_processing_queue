@@ -11,6 +11,4 @@ if __name__ == '__main__':
   from caleydo_server.config import view
   cc = view('caleydo_processing_queue.celery')
   import shlex
-  print cc.argv
-  print shlex.split(cc.argv)
   app.start([__file__]+shlex.split(cc.argv))
