@@ -1,8 +1,11 @@
 from __future__ import absolute_import, print_function
+
 import logging
 import functools
-from celery import Task
 import redis
+from celery.result import AsyncResult
+from celery import Task
+from celery.utils.log import get_task_logger
 
 _log = logging.getLogger(__name__)
 
@@ -81,10 +84,26 @@ class BaseTask(Task):
   def on_failure(self, exc, task_id, args, kwargs, einfo):
     notifier.send(task_id, self.name, 'failure')
 
+
+# create a notifier instance
 notifier = TaskNotifier()
 
+# create celery
 app = _create_celery()
+
+# use my base class all the time
 task = functools.partial(app.task, base=BaseTask)
 
+# use common name
+getLogger = get_task_logger
+
+def get_result(task_id):
+  """
+  wrapper around AsyncResult to avoid importing
+  :param task_id:
+  :return:
+  """
+  return AsyncResult(task_id, app=app)
+
 # just expose the needed stuff
-__all__ = ['task', 'celery_app', 'BaseTask', 'notifier']
+__all__ = ['task', 'celery_app', 'BaseTask', 'notifier', 'getLogger', 'get_result']

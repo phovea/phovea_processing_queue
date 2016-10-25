@@ -1,9 +1,8 @@
 from __future__ import absolute_import
 
-from caleydo_processing_queue.celery_app import task
-from celery.utils.log import get_task_logger
+from caleydo_processing_queue.celery import task, getLogger
 
-_log = get_task_logger(__name__)
+_log = getLogger(__name__)
 
 @task
 def add(x, y):

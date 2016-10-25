@@ -4,8 +4,7 @@ __author__ = 'Holger Stitz'
 from flask import Flask, Response
 from caleydo_server.util import jsonify
 
-from caleydo_processing_queue.celery_app import app as celery_app, notifier
-from celery.result import AsyncResult
+from caleydo_processing_queue.celery import notifier, get_result
 
 import logging
 _log = logging.getLogger(__name__)
@@ -18,7 +17,7 @@ def stream():
   event source like stream for requesting task results
   :return:
   """
-  from caleydo_processing_queue.celery_app import notifier
+  from caleydo_processing_queue.celery import notifier
   import json
   def event_stream():
     for msg in notifier.listen():
@@ -34,7 +33,7 @@ def get_result(task_id):
   :param task_id:
   :return:
   """
-  res = AsyncResult(task_id, app=celery_app)
+  res = get_result(task_id)
   return jsonify(res.get())
 
 @app.route('/add/<x>/<y>', methods=['GET'])
