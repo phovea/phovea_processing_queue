@@ -47,10 +47,13 @@ class TaskNotifier(object):
     self._db = redis.Redis(host=cc.host, port=cc.port, db=cc.db)
     self._channel_name = 'caleydo_processing_channel'
 
-  def subscribe(self):
+  def listen(self):
+    import json
     p = self._db.pubsub(ignore_subscribe_messages=True)
     p.subscribe(self._channel_name)
-    return p
+    for msg in p.listen():
+      if msg['type'] == 'message':
+        yield json.loads(msg['data'])
 
   def send(self, task_id, task_name, task_status):
     # send a message using redis
