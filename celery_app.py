@@ -48,6 +48,10 @@ class TaskNotifier(object):
     self._channel_name = 'caleydo_processing_channel'
 
   def listen(self):
+    """
+    listens to tasks changes
+    :return: a generator for notifications
+    """
     import json
     p = self._db.pubsub(ignore_subscribe_messages=True)
     p.subscribe(self._channel_name)
@@ -56,8 +60,15 @@ class TaskNotifier(object):
         yield json.loads(msg['data'])
 
   def send(self, task_id, task_name, task_status):
+    """
+    send a task change
+    :param task_id:  task id
+    :param task_name:  task name
+    :param task_status: the status (success, failure)
+    :return:
+    """
     # send a message using redis
-    print('send', task_id, task_name, task_status)
+    # print('send', task_id, task_name, task_status)
     self._db.publish(self._channel_name, '{{ "task_id": "{}", "task_name": "{}", "task_status": "{}" }}'.format(task_id,task_name,task_status))
 
 
