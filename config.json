@@ -1,5 +1,6 @@
 {
   "celery": {
+    "name": "caleydo_processing_queue",
     "host": "localhost",
     "port": 6379,
     "db": 5,
