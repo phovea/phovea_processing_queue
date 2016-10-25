@@ -1,15 +1,20 @@
 from __future__ import absolute_import, print_function
 
-import logging
 import functools
 import redis
 from celery.result import AsyncResult
 from celery import Task
 from celery.utils.log import get_task_logger
+import sys
 
-_log = logging.getLogger(__name__)
+# ensure plugins/ is part of the sys path
+if not 'plugins/' in sys.path:
+  sys.path.append('plugins/')
+
+_log = get_task_logger(__name__)
 
 def _create_celery():
+
   from celery import Celery
   from caleydo_server.plugin import list as list_plugins
   from caleydo_server.config import view as config_view
@@ -17,6 +22,9 @@ def _create_celery():
   #set configured registry
   plugins = list_plugins('processing-task')
   cc = config_view('caleydo_processing_queue')
+  print(cc.get('celery.name'),
+    cc.get('celery.broker'),
+    cc.get('celery.backend'))
 
   def _map(p):
     #print 'add processing tasks: ' + p.module
@@ -42,7 +50,10 @@ class TaskNotifier(object):
   utility to encapsulate the notifier behavior using redis pub usb
   """
   def __init__(self):
+    from caleydo_server.plugin import lookup
     from caleydo_server.config import view as config_view
+    # call lookup to enforce registry initialization which triggers configuration initialization
+    lookup('test')
     cc = config_view('caleydo_processing_queue.celery')
     self._db = redis.Redis(host=cc.host, port=cc.port, db=cc.db)
     self._channel_name = 'caleydo_processing_channel'

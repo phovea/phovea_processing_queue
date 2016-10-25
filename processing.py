@@ -15,7 +15,7 @@ def stream():
   event source like stream for requesting task results
   :return:
   """
-  from caleydo_processing_queue.queue import notifier
+  from caleydo_processing_queue.task_definition import notifier
   import json
   def event_stream():
     for msg in notifier.listen():
@@ -31,7 +31,7 @@ def get_result(task_id):
   :param task_id:
   :return:
   """
-  from caleydo_processing_queue.queue import get_result
+  from caleydo_processing_queue.task_definition import get_result
   res = get_result(task_id)
   return jsonify(res.get())
 
