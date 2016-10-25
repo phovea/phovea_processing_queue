@@ -7,12 +7,9 @@ import redis
 _log = logging.getLogger(__name__)
 
 def _create_celery():
-  import sys
   from celery import Celery
   from caleydo_server.plugin import list as list_plugins
   from caleydo_server.config import view as config_view
-  #change search path
-  sys.path.append('plugins/')
 
   #set configured registry
   plugins = list_plugins('processing-task')
@@ -91,11 +88,3 @@ task = functools.partial(app.task, base=BaseTask)
 
 # just expose the needed stuff
 __all__ = ['task', 'celery_app', 'BaseTask', 'notifier']
-
-if __name__ == '__main__':
-  import logging.config
-  from caleydo_server.config import view
-  cc = view('caleydo_processing_queue')
-  logging.config.dictConfig(cc.logging)
-
-  app.worker_main()
