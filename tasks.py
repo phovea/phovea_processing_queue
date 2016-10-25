@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 
-from caleydo_processing_queue.celery import task, getLogger
+from caleydo_processing_queue.queue import task, getLogger
 
 _log = getLogger(__name__)
 

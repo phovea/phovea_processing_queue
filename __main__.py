@@ -6,7 +6,7 @@ import sys
 # change search path
 sys.path.append('plugins/')
 
-from celery_app import app
+from caleydo_processing_queue.queue import app
 
 if __name__ == '__main__':
   from caleydo_server.config import view
