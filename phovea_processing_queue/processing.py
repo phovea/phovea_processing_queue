@@ -1,13 +1,13 @@
 __author__ = 'Holger Stitz'
 
 
-from flask import Flask, Response
+from phovea_server.ns import Namespace, Response
 from phovea_server.util import jsonify
 
 import logging
 _log = logging.getLogger(__name__)
 
-app = Flask(__name__)
+app = Namespace(__name__)
 
 @app.route('/stream')
 def stream():
