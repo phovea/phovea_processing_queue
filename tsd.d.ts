@@ -1,13 +1,27 @@
-/**
- * Created by Samuel Gratzl on 25.10.2016.
- */
+/* *****************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ **************************************************************************** */
 
-interface Callback { (data: any): void; }
-
-declare class EventSource {
-  onmessage: Callback;
-
-  addEventListener(event: string, cb: Callback): void;
-
-  constructor(name: string);
+//allow sass modules
+declare module "*.scss" {
+  const content:string;
+  export default content;
 }
+declare module "*.png";
+//allow html dependencies
+declare module "*.html" {
+  const content:string;
+  export default content;
+}
+//allow json dependencies
+declare module "*.json";
+//allow file dependencies
+declare module "file!*";
+//allow file dependencies
+declare module "raw!*";
+//allow url dependencies
+declare module "url!*";
+//allow html dependencies
+declare module "import!*";

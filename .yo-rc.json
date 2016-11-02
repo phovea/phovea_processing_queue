@@ -1,0 +1,49 @@
+{
+  "generator-phovea": {
+    "type": "lib-service",
+    "name": "phovea_processing_queue",
+    "author": "The Caleydo Team",
+    "githubAccount": "phovea",
+    "modules": [
+      "phovea_core",
+      "phovea_server",
+      "phovea_data_redis"
+    ],
+    "extensions": [
+      {
+        "type": "manager",
+        "id": "processing",
+        "module": "",
+        "extras": {}
+      }
+    ],
+    "sextensions": [
+      {
+        "type": "namespace",
+        "id": "caleydo_processing",
+        "module": "processing",
+        "extras": {
+          "namespace": "/api/processing"
+        }
+      },
+      {
+        "type": "processing-task",
+        "id": "caleydo_processing_task",
+        "module": "tasks",
+        "extras": {}
+      }
+    ],
+    "libraries": [],
+    "unknown": {
+      "requirements": [
+        "celery[redis,auth,msgpack]==4.0.0rc4"
+      ],
+      "debianPackages": [],
+      "redhatPackages": []
+    },
+    "libraryAliases": {},
+    "entries": "./index.js",
+    "ignores": [],
+    "today": "Wed, 02 Nov 2016 21:52:56 GMT"
+  }
+}
