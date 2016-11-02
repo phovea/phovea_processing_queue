@@ -7,6 +7,7 @@
   "dependencies": {
   },
   "peerDependencies": {
+    "caleydo_core": "*",
     "caleydo_server": "*",
     "caleydo_data_redis": "*"
   },
