@@ -11,6 +11,17 @@ interface ITaskMessage {
   task_status: string; //success, failure
 }
 
+interface Callback { (data: any): void; }
+
+// since not defined yet
+declare class EventSource {
+  onmessage: Callback;
+
+  addEventListener(event: string, cb: Callback): void;
+
+  constructor(name: string);
+}
+
 class ProcessingManager extends EventHandler {
   private source: any;
 
