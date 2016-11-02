@@ -16,12 +16,12 @@ _log = get_task_logger(__name__)
 def _create_celery():
 
   from celery import Celery
-  from caleydo_server.plugin import list as list_plugins
-  from caleydo_server.config import view as config_view
+  from phovea_server.plugin import list as list_plugins
+  from phovea_server.config import view as config_view
 
   #set configured registry
   plugins = list_plugins('processing-task')
-  cc = config_view('caleydo_processing_queue')
+  cc = config_view('phovea_processing_queue')
   print(cc.get('celery.name'),
     cc.get('celery.broker'),
     cc.get('celery.backend'))
@@ -50,13 +50,13 @@ class TaskNotifier(object):
   utility to encapsulate the notifier behavior using redis pub usb
   """
   def __init__(self):
-    from caleydo_server.plugin import lookup
-    from caleydo_server.config import view as config_view
+    from phovea_server.plugin import lookup
+    from phovea_server.config import view as config_view
     # call lookup to enforce registry initialization which triggers configuration initialization
     lookup('test')
-    cc = config_view('caleydo_processing_queue.celery')
+    cc = config_view('phovea_processing_queue.celery')
     self._db = redis.Redis(host=cc.host, port=cc.port, db=cc.db)
-    self._channel_name = 'caleydo_processing_channel'
+    self._channel_name = 'phovea_processing_channel'
 
   def listen(self):
     """

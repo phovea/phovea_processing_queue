@@ -10,11 +10,11 @@ def phovea(registry):
   register extension points
   :param registry:
   """
-  registry.append('namespace','caleydo_processing','phovea_processing_queue.processing', {
+  registry.append('namespace','phovea_processing','phovea_processing_queue.processing', {
    'namespace': '/api/processing'
   })
 
-  registry.append('processing-task','caleydo_processing_task','phovea_processing_queue.tasks', {})
+  registry.append('processing-task','phovea_processing_task','phovea_processing_queue.tasks', {})
   pass
 
 

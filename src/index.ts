@@ -4,8 +4,8 @@
 
 /// <reference path="./tsd.d.ts" />
 
-import {api2absURL, getAPIData as getBaseAPIData} from '../caleydo_core/ajax';
-import {EventHandler, IEvent} from '../caleydo_core/event';
+import {api2absURL, getAPIData as getBaseAPIData} from 'phovea_core/src/ajax';
+import {EventHandler, IEvent} from 'phovea_core/src/event';
 
 interface ITaskMessage {
   task_id: string;

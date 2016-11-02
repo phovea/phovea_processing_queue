@@ -2,7 +2,7 @@ __author__ = 'Holger Stitz'
 
 
 from flask import Flask, Response
-from caleydo_server.util import jsonify
+from phovea_server.util import jsonify
 
 import logging
 _log = logging.getLogger(__name__)
@@ -15,7 +15,7 @@ def stream():
   event source like stream for requesting task results
   :return:
   """
-  from caleydo_processing_queue.task_definition import notifier
+  from phovea_processing_queue.task_definition import notifier
   import json
   def event_stream():
     for msg in notifier.listen():
@@ -31,7 +31,7 @@ def get_result(task_id):
   :param task_id:
   :return:
   """
-  from caleydo_processing_queue.task_definition import get_result
+  from phovea_processing_queue.task_definition import get_result
   res = get_result(task_id)
   return jsonify(res.get())
 

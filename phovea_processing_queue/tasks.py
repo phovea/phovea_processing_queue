@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 
-from caleydo_processing_queue.task_definition import task, getLogger
+from phovea_processing_queue.task_definition import task, getLogger
 
 _log = getLogger(__name__)
 

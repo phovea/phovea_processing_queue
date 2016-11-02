@@ -5,10 +5,10 @@ import sys
 # change search path
 sys.path.append('plugins/')
 
-from caleydo_processing_queue.task_definition import app
+from phovea_processing_queue.task_definition import app
 
 if __name__ == '__main__':
-  from caleydo_server.config import view
-  cc = view('caleydo_processing_queue.celery')
+  from phovea_server.config import view
+  cc = view('phovea_processing_queue.celery')
   import shlex
   app.start([__file__]+shlex.split(cc.argv))

@@ -2,7 +2,7 @@
  * Created by Samuel Gratzl on 25.10.2016.
  */
 
-import {getAPIJSON} from './main';
+import {getAPIJSON} from './index';
 
 (<HTMLFormElement>document.querySelector('form')).addEventListener('submit', function(event) {
   const a = +(<HTMLInputElement>document.getElementById('ida')).value;
