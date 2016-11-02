@@ -2,8 +2,6 @@
  * Created by Samuel Gratzl on 25.10.2016.
  */
 
-/// <reference path="./tsd.d.ts" />
-
 import {api2absURL, getAPIData as getBaseAPIData} from 'phovea_core/src/ajax';
 import {EventHandler, IEvent} from 'phovea_core/src/event';
 
