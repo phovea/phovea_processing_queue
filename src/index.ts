@@ -11,13 +11,11 @@ interface ITaskMessage {
   task_status: string; //success, failure
 }
 
-interface Callback { (data: any): void; }
-
 // since not defined yet
 declare class EventSource {
-  onmessage: Callback;
+  onmessage: (data: any)=>void;
 
-  addEventListener(event: string, cb: Callback): void;
+  addEventListener(event: string, cb: (data: any)=>void): void;
 
   constructor(name: string);
 }
@@ -38,14 +36,14 @@ class ProcessingManager extends EventHandler {
 
   private onEvent(event: any) {
     const data = JSON.parse(event.data);
-    this.fire('status,'+data.task_status, data);
+    this.fire('status,' + data.task_status, data);
   }
 }
 
-var p : ProcessingManager = null;
+var p: ProcessingManager = null;
 
 export function create() {
-  if (p === null){
+  if (p === null) {
     p = new ProcessingManager();
   }
   return p;
@@ -60,10 +58,12 @@ function waitForResult(expectedDataType = 'json'): (taskId: string)=>Promise<any
   const manager = create();
 
   const cache = {};
+
   function waitingHandler(event: IEvent, data: ITaskMessage) {
     //maybe soo fast that the success message is earlier than the result
     cache[data.task_id] = data;
   }
+
   manager.on('status', waitingHandler);
 
   /**
@@ -92,6 +92,7 @@ function waitForResult(expectedDataType = 'json'): (taskId: string)=>Promise<any
         manager.off('status', waitForResult);
         resolve(data);
       }
+
       manager.on('status', waitForResult);
     });
   }
@@ -106,7 +107,7 @@ function waitForResult(expectedDataType = 'json'): (taskId: string)=>Promise<any
       return Promise.reject(`task ${taskMessage.task_id} (${taskMessage.task_name}) failed`);
     }
     //get the real data
-    return getBaseAPIData('/processing/res/'+taskMessage.task_id, {}, expectedDataType);
+    return getBaseAPIData('/processing/res/' + taskMessage.task_id, {}, expectedDataType);
   }
 
 
@@ -119,7 +120,7 @@ function waitForResult(expectedDataType = 'json'): (taskId: string)=>Promise<any
  * @param data arguments
  * @returns {Promise<any>}
  */
-export function getAPIJSON(url: string, data : any = {}): Promise<any> {
+export function getAPIJSON(url: string, data: any = {}): Promise<any> {
   return getAPIData(url, data, 'json');
 }
 
@@ -130,7 +131,7 @@ export function getAPIJSON(url: string, data : any = {}): Promise<any> {
  * @param expectedDataType expected data type to return, in case of JSON it will be parsed using JSON.parse
  * @returns {Promise<any>}
  */
-export function getAPIData(url: string, data : any = {}, expectedDataType = 'json'): Promise<any> {
+export function getAPIData(url: string, data: any = {}, expectedDataType = 'json'): Promise<any> {
   const waiter = waitForResult(expectedDataType);
   return getBaseAPIData(url, data, 'text').then(waiter);
 }
