@@ -11,9 +11,10 @@ def phovea(registry):
   :param registry:
   """
   # generator-phovea:begin
-  registry.append('namespace', 'phovea_processing', 'phovea_processing_queue.processing', {
-   'namespace': '/api/processing'
-  })
+  registry.append('namespace', 'phovea_processing', 'phovea_processing_queue.processing',
+                  {
+                      'namespace': '/api/processing'
+                  })
 
   registry.append('processing-task', 'phovea_processing_task', 'phovea_processing_queue.tasks', {})
   # generator-phovea:end

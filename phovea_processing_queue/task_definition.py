@@ -1,54 +1,52 @@
 from __future__ import absolute_import, print_function
-
 import functools
 import redis
 from celery.result import AsyncResult
 from celery import Task
 from celery.utils.log import get_task_logger
-import sys
 
-# ensure plugins/ is part of the sys path
-if not 'plugins/' in sys.path:
-  sys.path.append('plugins/')
 
 _log = get_task_logger(__name__)
 
-def _create_celery():
 
+def _create_celery():
   from celery import Celery
   from phovea_server.plugin import list as list_plugins
   from phovea_server.config import view as config_view
 
-  #set configured registry
+  # set configured registry
   plugins = list_plugins('processing-task')
   cc = config_view('phovea_processing_queue')
   print(cc.get('celery.name'),
-    cc.get('celery.broker'),
-    cc.get('celery.backend'))
+        cc.get('celery.broker'),
+        cc.get('celery.backend'))
 
   def _map(p):
-    #print 'add processing tasks: ' + p.module
+    # print 'add processing tasks: ' + p.module
     _log.info('add processing task: %s', p.module)
     return p.module
+
   task_modules = map(_map, plugins)
 
   app = Celery(
-    cc.get('celery.name'),
-    broker=cc.get('celery.broker'),
-    backend=cc.get('celery.backend'),
-    include=task_modules
+      cc.get('celery.name'),
+      broker=cc.get('celery.broker'),
+      backend=cc.get('celery.backend'),
+      include=task_modules
   )
 
   # Optional configuration, see the application user guide.
   app.conf.update(
-    CELERY_TASK_RESULT_EXPIRES=cc.getint('celery.expires')
+      CELERY_TASK_RESULT_EXPIRES=cc.getint('celery.expires')
   )
   return app
+
 
 class TaskNotifier(object):
   """
   utility to encapsulate the notifier behavior using redis pub usb
   """
+
   def __init__(self):
     from phovea_server.plugin import lookup
     from phovea_server.config import view as config_view
@@ -80,7 +78,9 @@ class TaskNotifier(object):
     """
     # send a message using redis
     # print('send', task_id, task_name, task_status)
-    self._db.publish(self._channel_name, '{{ "task_id": "{}", "task_name": "{}", "task_status": "{}" }}'.format(task_id,task_name,task_status))
+    self._db.publish(self._channel_name,
+                     '{{ "task_id": "{}", "task_name": "{}", "task_status": "{}" }}'.format(task_id, task_name,
+                                                                                            task_status))
 
 
 class BaseTask(Task):
@@ -108,6 +108,7 @@ task = functools.partial(app.task, base=BaseTask)
 # use common name
 getLogger = get_task_logger
 
+
 def get_result(task_id):
   """
   wrapper around AsyncResult to avoid importing
@@ -116,5 +117,6 @@ def get_result(task_id):
   """
   return AsyncResult(task_id, app=app)
 
+
 # just expose the needed stuff
-__all__ = ['task', 'celery_app', 'BaseTask', 'notifier', 'getLogger', 'get_result']
+__all__ = ['task', 'app', 'BaseTask', 'notifier', 'getLogger', 'get_result']
