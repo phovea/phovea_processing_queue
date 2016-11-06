@@ -1,0 +1,3 @@
+-e git+https://github.com/phovea/phovea_server.git#egg=phovea_server
+-e git+https://github.com/phovea/phovea_data_redis.git#egg=phovea_data_redis
+celery[redis,auth,msgpack]==4.0.0rc4
