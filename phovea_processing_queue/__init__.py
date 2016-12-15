@@ -17,6 +17,8 @@ def phovea(registry):
                   })
 
   registry.append('processing-task', 'phovea_processing_task', 'phovea_processing_queue.tasks', {})
+  # register celery command
+  registry.append('command', 'celery', 'phovea_processing_queue.server', {})
   # generator-phovea:end
   pass
 
