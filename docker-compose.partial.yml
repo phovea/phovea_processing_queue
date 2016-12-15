@@ -1,0 +1,7 @@
+version: '2.0'
+services:
+  celery:
+    build: '.'
+    volumes:
+    - .:/phovea
+    - ./_logs:/var/log/phovea
