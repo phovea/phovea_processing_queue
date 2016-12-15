@@ -1,7 +1,7 @@
 {
   "celery": {
-    "name": "caleydo_processing_queue",
-    "host": "localhost",
+    "name": "phovea_processing_queue",
+    "host": "redis",
     "port": 6379,
     "db": 5,
     "broker": "redis://${host}:${port}/${db}",
