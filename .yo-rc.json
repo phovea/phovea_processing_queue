@@ -2,7 +2,7 @@
   "generator-phovea": {
     "type": "lib-service",
     "name": "phovea_processing_queue",
-	"serviceName": "celery",
+    "serviceName": "celery",
     "author": "The Caleydo Team",
     "githubAccount": "phovea",
     "modules": [
