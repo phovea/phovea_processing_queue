@@ -6,4 +6,3 @@ services:
       dockerfile: deploy/Dockerfile_dev
     volumes:
     - .:/phovea
-    - ./_logs:/var/log/phovea
