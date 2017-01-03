@@ -37,7 +37,7 @@
     "libraries": [],
     "unknown": {
       "requirements": [
-        "celery[redis,auth,msgpack]==4.0.0rc4"
+        "celery[redis,auth,msgpack]==4.0.1"
       ],
       "debianPackages": [],
       "redhatPackages": []
