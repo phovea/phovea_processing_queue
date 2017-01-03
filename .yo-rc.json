@@ -2,6 +2,7 @@
   "generator-phovea": {
     "type": "lib-service",
     "name": "phovea_processing_queue",
+    "serviceName": "celery",
     "author": "The Caleydo Team",
     "githubAccount": "phovea",
     "modules": [
@@ -36,7 +37,7 @@
     "libraries": [],
     "unknown": {
       "requirements": [
-        "celery[redis,auth,msgpack]==4.0.0rc4"
+        "celery[redis,auth,msgpack]==4.0.1"
       ],
       "debianPackages": [],
       "redhatPackages": []
