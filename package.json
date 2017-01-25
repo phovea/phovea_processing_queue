@@ -19,14 +19,14 @@
     "release:major": "npm version major && npm publish && git push --follow-tags",
     "release:minor": "npm version minor && npm publish && git push --follow-tags",
     "release:patch": "npm version patch && npm publish && git push --follow-tags",
-    "test:web": "karma start",
+    "test:web": "test ! -d tests || karma start",
     "test:python": "test ! -d tests || python setup.py test",
     "dist:web": "mkdirp dist && cd build && tar cvzf ../dist/phovea_processing_queue.tar.gz *",
     "dist:python": "python setup.py bdist_egg",
     "pretest:web": "npm run compile",
     "pretest:python": "npm run check",
     "posttest:web": "npm run lint",
-    "predist:web": "npm run build",
+    "predist:web": "npm run build:web && npm run docs:web",
     "predocker": "npm run build",
     "docker": "docker build -t phovea_processing_queue -f deploy/Dockerfile .",
     "docker:dev": "docker build -t phovea_processing_queue -f deploy/Dockerfile_dev .",
@@ -34,7 +34,8 @@
     "docs:web": "typedoc --options typedoc.json src/**.ts",
     "docs:python": "echo todo creating docs...",
     "build:python": "python -c \"from distutils.dir_util import mkpath ; mkpath('./build/source')\" && (tar -c ./phovea_processing_queue --exclude '*.pyc' | tar -xC build/source)",
-    "build:web": "webpack --env prod"
+    "build:web": "webpack --env prod",
+    "predist:python": "npm run build:python && npm run docs:python"
   },
   "files": [
     "src",
