@@ -35,13 +35,6 @@
       }
     ],
     "libraries": [],
-    "unknown": {
-      "requirements": [
-        "celery[redis,auth,msgpack]==4.0.1"
-      ],
-      "debianPackages": [],
-      "redhatPackages": []
-    },
     "libraryAliases": {},
     "entries": "./index.js",
     "ignores": [],
