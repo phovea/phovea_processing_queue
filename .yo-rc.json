@@ -39,6 +39,10 @@
     "entries": "./index.js",
     "ignores": [],
     "today": "Wed, 02 Nov 2016 21:52:56 GMT",
-    "libraryExternals": []
+    "libraryExternals": [],
+    "unknown": {
+      "requirements": [],
+      "dockerPackages": []
+    }
   }
 }
