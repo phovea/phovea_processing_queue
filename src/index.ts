@@ -40,7 +40,7 @@ class ProcessingManager extends EventHandler {
   }
 }
 
-var p: ProcessingManager = null;
+let p: ProcessingManager = null;
 
 export function create() {
   if (p === null) {
