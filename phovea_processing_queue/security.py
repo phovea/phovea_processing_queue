@@ -1,5 +1,5 @@
 from phovea_server.security import User, SecurityManager, ANONYMOUS_USER
-from gevent import local
+from gevent.local import local
 
 __author__ = 'Samuel Gratzl'
 

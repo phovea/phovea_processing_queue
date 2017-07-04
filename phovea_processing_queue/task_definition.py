@@ -87,7 +87,7 @@ def _create_context():
 
   # copy the user into the context if the user is logged in
   user = current_user()
-  if user.is_authenticated():
+  if user.is_authenticated:
     context['user'] = user.id
     context['roles'] = user.roles
 
@@ -96,7 +96,8 @@ def _create_context():
 
 def _take_down_context(context):
   from .security import logout_task
-  logout_task()
+  if 'user' in context:
+    logout_task()
 
 
 def _setup_context(context):
@@ -113,24 +114,34 @@ class BaseTask(Task):
   abstract = True
 
   def on_success(self, retval, task_id, args, kwargs):
-    _take_down_context(kwargs.get('_processing_context', dict()))
     notifier.send(task_id, self.name, 'success')
 
   def on_failure(self, exc, task_id, args, kwargs, einfo):
-    _take_down_context(kwargs.get('_processing_context', dict()))
     notifier.send(task_id, self.name, 'failure')
 
-  def apply_async(self, args=None, kwargs=None, *extra_args, **extra_kwargs):
-    if kwargs is None:
-      kwargs = {}
-    kwargs['_processing_context'] = _create_context()
-    return super(BaseTask, self).apply_async(args, kwargs, *extra_args, **extra_kwargs)
+  def apply_async(self, args=None, kwargs=None, task_id=None, producer=None,
+                  link=None, link_error=None, **options):
+    """ invoked either directly or via .delay() to fork a task from the main process """
 
-  def run(self, *args, **kwargs):
-    context = kwargs.get('_processing_context', dict())
-    del kwargs['_processing_context']
-    _setup_context(context)
-    return super(BaseTask, self).run(*args, **kwargs)
+    # based on https://chase-seibert.github.io/blog/2015/07/24/custom-celery-arguments.html
+    options['headers'] = options.get('headers', {})
+    options['headers'].update({
+      '_processing_context': _create_context(),
+    })
+
+    return super(BaseTask, self).apply_async(args, kwargs, task_id, producer, link, link_error, **options)
+
+  def __call__(self, *args, **kwargs):
+    """ execute the task body on the remote worker """
+    context = self.get_header('_processing_context', {})
+    try:
+      _setup_context(context)
+      return super(BaseTask, self).__call__(*args, **kwargs)
+    finally:
+      _take_down_context(context)
+
+  def get_header(self, key, default=None):
+    return (self.request.headers or {}).get(key, default)
 
 
 # create a notifier instance
