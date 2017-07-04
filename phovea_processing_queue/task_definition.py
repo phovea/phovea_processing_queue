@@ -27,17 +27,14 @@ def _create_celery():
 
   task_modules = map(_map, plugins)
 
-  app = Celery(
-    cc.get('celery.name'),
-    broker=cc.get('celery.broker'),
-    backend=cc.get('celery.backend'),
-    include=task_modules
-  )
+  app = Celery(cc.get('celery.name'),
+               broker=cc.get('celery.broker'),
+               backend=cc.get('celery.backend'),
+               include=task_modules
+               )
 
   # Optional configuration, see the application user guide.
-  app.conf.update(
-    CELERY_TASK_RESULT_EXPIRES=cc.getint('celery.expires')
-  )
+  app.conf.update(CELERY_TASK_RESULT_EXPIRES=cc.getint('celery.expires'))
   return app
 
 

@@ -42,6 +42,7 @@ class CelerySecurityManager(SecurityManager):
 
   def login_required(self, f):
     import functools
+
     @functools.wraps(f)
     def check_required(*args, **kwargs):
       if not self.is_authenticated():
