@@ -11,14 +11,12 @@ def phovea(registry):
   :param registry:
   """
   # generator-phovea:begin
-  registry.append('namespace', 'phovea_processing', 'phovea_processing_queue.processing',
-                  {
-                      'namespace': '/api/processing'
-                  })
-
+  registry.append('namespace', 'phovea_processing', 'phovea_processing_queue.processing', dict(namespace='/api/processing'))
   registry.append('processing-task', 'phovea_processing_task', 'phovea_processing_queue.tasks', {})
   # register celery command
   registry.append('command', 'celery', 'phovea_processing_queue.server', {})
+  # register celery security manager for my command
+  registry.append('manager', 'security_manager', 'phovea_processing_queue.security', dict(command='celery', priority=100))
   # generator-phovea:end
   pass
 
