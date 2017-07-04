@@ -103,7 +103,8 @@ def _take_down_context(context):
 def _setup_context(context):
   from .security import login_task
   if 'user' in context:
-    _log.info('authenticating task as %s', context['user'])
+    current_log = get_task_logger(__name__)
+    current_log.info('authenticating task as %s', context['user'])
     login_task(context['user'], context.get('roles', []))
 
 
@@ -125,23 +126,18 @@ class BaseTask(Task):
 
     # based on https://chase-seibert.github.io/blog/2015/07/24/custom-celery-arguments.html
     options['headers'] = options.get('headers', {})
-    options['headers'].update({
-      '_processing_context': _create_context(),
-    })
+    options['headers']['_phovea_processing_context'] = _create_context()
 
     return super(BaseTask, self).apply_async(args, kwargs, task_id, producer, link, link_error, **options)
 
   def __call__(self, *args, **kwargs):
     """ execute the task body on the remote worker """
-    context = self.get_header('_processing_context', {})
+    context = (self.request or {}).get('_phovea_processing_context', {})
     try:
       _setup_context(context)
       return super(BaseTask, self).__call__(*args, **kwargs)
     finally:
       _take_down_context(context)
-
-  def get_header(self, key, default=None):
-    return (self.request.headers or {}).get(key, default)
 
 
 # create a notifier instance

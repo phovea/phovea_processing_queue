@@ -24,18 +24,20 @@ class NotLoggedInException(Exception):
 
 
 class CelerySecurityManager(SecurityManager):
+  def __init__(self):
+    super(CelerySecurityManager, self).__init__()
+    self._context = local()
+
   def logout(self):
-    context = local()
-    delattr(context, 'user')
+    delattr(self._context, 'user')
 
   def login(self, username, extra_fields=None):
     # cannot login in the ordinay way
     return None
 
   def login_celery(self, name, roles):
-    context = local()
     user = CeleryUser(name, roles)
-    context.user = user
+    self._context.user = user
     return user
 
   def login_required(self, f):
@@ -50,8 +52,7 @@ class CelerySecurityManager(SecurityManager):
 
   @property
   def current_user(self):
-    context = local()
-    return getattr(context, 'user', ANONYMOUS_USER)
+    return getattr(self._context, 'user', ANONYMOUS_USER)
 
 
 def create():
