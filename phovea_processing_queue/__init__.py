@@ -16,7 +16,7 @@ def phovea(registry):
   # register celery command
   registry.append('command', 'celery', 'phovea_processing_queue.server', {})
   # register celery security manager for my command
-  registry.append('manager', 'security_manager', 'phovea_processing_queue.security', dict(command='celery', priority=100))
+  registry.append('manager', 'security_manager', 'phovea_processing_queue.security', dict(command='celery', priority=1000))
   # generator-phovea:end
   pass
 
