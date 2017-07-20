@@ -5,7 +5,6 @@ from celery.result import AsyncResult
 from celery import Task
 from celery.utils.log import get_task_logger
 
-
 _log = get_task_logger(__name__)
 
 
@@ -28,17 +27,14 @@ def _create_celery():
 
   task_modules = map(_map, plugins)
 
-  app = Celery(
-      cc.get('celery.name'),
-      broker=cc.get('celery.broker'),
-      backend=cc.get('celery.backend'),
-      include=task_modules
-  )
+  app = Celery(cc.get('celery.name'),
+               broker=cc.get('celery.broker'),
+               backend=cc.get('celery.backend'),
+               include=task_modules
+               )
 
   # Optional configuration, see the application user guide.
-  app.conf.update(
-      CELERY_TASK_RESULT_EXPIRES=cc.getint('celery.expires')
-  )
+  app.conf.update(CELERY_TASK_RESULT_EXPIRES=cc.getint('celery.expires'))
   return app
 
 
@@ -78,9 +74,35 @@ class TaskNotifier(object):
     """
     # send a message using redis
     # print('send', task_id, task_name, task_status)
-    self._db.publish(self._channel_name,
-                     '{{ "task_id": "{}", "task_name": "{}", "task_status": "{}" }}'.format(task_id, task_name,
-                                                                                            task_status))
+    msg = '{{ "task_id": "{}", "task_name": "{}", "task_status": "{}" }}'.format(task_id, task_name, task_status)
+    self._db.publish(self._channel_name, msg)
+
+
+def _create_context():
+  from phovea_server.security import current_user
+  context = dict()
+
+  # copy the user into the context if the user is logged in
+  user = current_user()
+  if user.is_authenticated:
+    context['user'] = user.id
+    context['roles'] = user.roles
+
+  return context
+
+
+def _take_down_context(context):
+  from .security import logout_task
+  if 'user' in context:
+    logout_task()
+
+
+def _setup_context(context):
+  from .security import login_task
+  if 'user' in context:
+    current_log = get_task_logger(__name__)
+    current_log.info('authenticating task as %s', context['user'])
+    login_task(context['user'], context.get('roles', []))
 
 
 class BaseTask(Task):
@@ -94,6 +116,25 @@ class BaseTask(Task):
 
   def on_failure(self, exc, task_id, args, kwargs, einfo):
     notifier.send(task_id, self.name, 'failure')
+
+  def apply_async(self, args=None, kwargs=None, task_id=None, producer=None,
+                  link=None, link_error=None, **options):
+    """ invoked either directly or via .delay() to fork a task from the main process """
+
+    # based on https://chase-seibert.github.io/blog/2015/07/24/custom-celery-arguments.html
+    options['headers'] = options.get('headers', {})
+    options['headers']['_phovea_processing_context'] = _create_context()
+
+    return super(BaseTask, self).apply_async(args, kwargs, task_id, producer, link, link_error, **options)
+
+  def __call__(self, *args, **kwargs):
+    """ execute the task body on the remote worker """
+    context = (self.request or {}).get('_phovea_processing_context', {})
+    try:
+      _setup_context(context)
+      return super(BaseTask, self).__call__(*args, **kwargs)
+    finally:
+      _take_down_context(context)
 
 
 # create a notifier instance
