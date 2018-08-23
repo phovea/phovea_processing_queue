@@ -22,7 +22,7 @@
     "test:web": "test ! -d tests || karma start",
     "test:python": "test ! -d tests || python setup.py test",
     "dist:web": "mkdirp dist && cd build && tar cvzf ../dist/phovea_processing_queue.tar.gz *",
-    "dist:python": "python setup.py bdist_egg",
+    "dist:python": "python setup.py sdist bdist_wheel",
     "pretest:web": "npm run compile",
     "pretest:python": "npm run check",
     "posttest:web": "npm run lint",
@@ -59,12 +59,12 @@
     "iojs": ">= 3"
   },
   "dependencies": {
-    "phovea_core": "github:phovea/phovea_core#develop"
+    "phovea_core": "2.0.0"
   },
   "name": "phovea_processing_queue",
   "description": "Process long-running tasks in the background using Celery.",
   "homepage": "https://phovea.caleydo.org",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": {
     "name": "The Caleydo Team",
     "email": "contact@caleydo.org",
