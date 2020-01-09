@@ -1,4 +1,4 @@
-from __future__ import absolute_import, print_function
+
 import functools
 import redis
 from celery.result import AsyncResult
@@ -25,7 +25,7 @@ def _create_celery():
     _log.info('add processing task: %s', p.module)
     return p.module
 
-  task_modules = map(_map, plugins)
+  task_modules = list(map(_map, plugins))
 
   app = Celery(cc.get('celery.name'),
                broker=cc.get('celery.broker'),
