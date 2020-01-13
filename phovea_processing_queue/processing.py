@@ -40,7 +40,7 @@ def get_result(task_id):
 
 @app.route('/add/<x>/<y>', methods=['GET'])
 def add(x, y):
-  import tasks
+  from . import tasks
   res = tasks.add.delay(x, y)
   return res.id
 

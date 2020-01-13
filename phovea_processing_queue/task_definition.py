@@ -1,4 +1,4 @@
-from __future__ import absolute_import, print_function
+
 import functools
 import redis
 from celery.result import AsyncResult
@@ -25,7 +25,7 @@ def _create_celery():
     _log.info('add processing task: %s', p.module)
     return p.module
 
-  task_modules = map(_map, plugins)
+  task_modules = list(map(_map, plugins))
 
   app = Celery(cc.get('celery.name'),
                broker=cc.get('celery.broker'),
@@ -147,7 +147,7 @@ app = _create_celery()
 task = functools.partial(app.task, base=BaseTask)
 
 # use common name
-getLogger = get_task_logger
+get_logger = get_task_logger
 
 
 def get_result(task_id):
@@ -160,4 +160,4 @@ def get_result(task_id):
 
 
 # just expose the needed stuff
-__all__ = ['task', 'app', 'BaseTask', 'notifier', 'getLogger', 'get_result']
+__all__ = ['task', 'app', 'BaseTask', 'notifier', 'get_logger', 'get_result']
