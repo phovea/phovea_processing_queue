@@ -1,8 +1,8 @@
 
-from phovea_processing_queue.task_definition import task, getLogger
+from phovea_processing_queue.task_definition import task, get_logger
 
 
-_log = getLogger(__name__)
+_log = get_logger(__name__)
 
 
 @task
