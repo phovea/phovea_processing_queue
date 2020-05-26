@@ -2,7 +2,7 @@
  * Created by Samuel Gratzl on 25.10.2016.
  */
 
-import {api2absURL, getAPIData as getBaseAPIData} from 'phovea_core';
+import {AppContext} from 'phovea_core';
 import {EventHandler, IEvent} from 'phovea_core';
 
 interface ITaskMessage {
@@ -30,7 +30,7 @@ class ProcessingManager extends EventHandler {
 
   private connect() {
     //use an event source to listen for results
-    this.source = new EventSource(api2absURL('/processing/stream'));
+    this.source = new EventSource(AppContext.getInstance().api2absURL('/processing/stream'));
     this.source.onmessage = this.onEvent.bind(this);
   }
 
@@ -107,7 +107,7 @@ function waitForResult(expectedDataType = 'json'): (taskId: string)=>Promise<any
       return Promise.reject(`task ${taskMessage.task_id} (${taskMessage.task_name}) failed`);
     }
     //get the real data
-    return getBaseAPIData('/processing/res/' + taskMessage.task_id, {}, expectedDataType);
+    return AppContext.getInstance().getAPIData('/processing/res/' + taskMessage.task_id, {}, expectedDataType);
   }
 
 
@@ -133,5 +133,5 @@ export function getAPIJSON(url: string, data: any = {}): Promise<any> {
  */
 export function getAPIData(url: string, data: any = {}, expectedDataType = 'json'): Promise<any> {
   const waiter = waitForResult(expectedDataType);
-  return getBaseAPIData(url, data, 'text').then(waiter);
+  return AppContext.getInstance().getAPIData(url, data, 'text').then(waiter);
 }
