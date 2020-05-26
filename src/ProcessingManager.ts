@@ -2,8 +2,8 @@
  * Created by Samuel Gratzl on 25.10.2016.
  */
 
-import {api2absURL, getAPIData as getBaseAPIData} from 'phovea_core/src/ajax';
-import {EventHandler, IEvent} from 'phovea_core/src/event';
+import {api2absURL, getAPIData as getBaseAPIData} from 'phovea_core';
+import {EventHandler, IEvent} from 'phovea_core';
 
 interface ITaskMessage {
   task_id: string;
