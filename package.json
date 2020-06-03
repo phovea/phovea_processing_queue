@@ -26,7 +26,6 @@
     "release:patch": "npm version patch && npm publish && git push --follow-tags",
     "docs:web": "typedoc --options typedoc.json src/**.ts",
     "docs:python": "sphinx-apidoc -o docs -f ./phovea_processing_queue && sphinx-build ./docs build/docs",
-    "pretest:web": "npm run compile",
     "pretest:python": "npm run check",
     "posttest:web": "npm run lint",
     "test:web": "test ! $(find tests -name \"*.ts\") || jest",
