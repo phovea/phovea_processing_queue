@@ -5,6 +5,7 @@
  **************************************************************************** */
 
 import {register} from 'phovea_core';
+import reg from './dist/phovea';
 
 /**
  * build a registry by registering all phovea modules
@@ -12,4 +13,4 @@ import {register} from 'phovea_core';
 //other modules
 import 'phovea_core/phovea_registry.js';
 //self
-register('phovea_processing_queue',require('./phovea.js'));
+register('phovea_processing_queue',reg);

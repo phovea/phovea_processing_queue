@@ -7,6 +7,6 @@
 //register all extensions in the registry following the given pattern
 module.exports = function(registry) {
   //registry.push('extension-type', 'extension-id', function() { return import('./src/extension_impl'); }, {});
-  registry.push('manager', 'processing', function() { return import('./src/').then((p) => p.ProcessingManager); }, {});
+  registry.push('manager', 'processing', function() { return import('./ProcessingManager').then((p) => p.ProcessingManager); }, {});
 };
 
