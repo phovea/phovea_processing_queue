@@ -60,12 +60,12 @@
     "iojs": ">= 3"
   },
   "dependencies": {
-    "phovea_core": "^4.0.0"
+    "phovea_core": "^5.0.0"
   },
   "name": "phovea_processing_queue",
   "description": "Process long-running tasks in the background using Celery.",
   "homepage": "https://phovea.caleydo.org",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "author": {
     "name": "The Caleydo Team",
     "email": "contact@caleydo.org",
