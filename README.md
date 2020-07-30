@@ -1,5 +1,7 @@
-phovea_processing_queue [![Phovea][phovea-image]][phovea-url] [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+phovea_processing_queue
 =====================
+[![Phovea][phovea-image-client]][phovea-url] [![Phovea][phovea-image-server]][phovea-url] [![NPM version][npm-image]][npm-url] [![Build Status][circleci-image]][circleci-url]
+
 
 Define long-running tasks that should be processed in the background using [Celery](http://www.celeryproject.org/).
 
@@ -34,11 +36,11 @@ npm run build
 This repository is part of **[Phovea](http://phovea.caleydo.org/)**, a platform for developing web-based visualization applications. For tutorials, API docs, and more information about the build and deployment process, see the [documentation page](http://phovea.caleydo.org).
 
 
-[phovea-image]: https://img.shields.io/badge/Phovea-Client%20Plugin-F47D20.svg
+[phovea-image-client]: https://img.shields.io/badge/Phovea-Client%20Plugin-F47D20.svg
+[phovea-image-server]: https://img.shields.io/badge/Phovea-Server%20Plugin-10ACDF.svg
 [phovea-url]: https://phovea.caleydo.org
 [npm-image]: https://badge.fury.io/js/phovea_processing_queue.svg
 [npm-url]: https://npmjs.org/package/phovea_processing_queue
-[travis-image]: https://travis-ci.org/phovea/phovea_processing_queue.svg?branch=master
-[travis-url]: https://travis-ci.org/phovea/phovea_processing_queue
-[daviddm-image]: https://david-dm.org/phovea/phovea_processing_queue/status.svg
-[daviddm-url]: https://david-dm.org/phovea/phovea_processing_queue
+[circleci-image]: https://circleci.com/gh/phovea/phovea_processing_queue.svg?style=shield
+[circleci-url]: https://circleci.com/gh/phovea/phovea_processing_queue
+ 
