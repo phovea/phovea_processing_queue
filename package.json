@@ -60,7 +60,7 @@
     "iojs": ">= 3"
   },
   "dependencies": {
-    "phovea_core": "github:phovea/phovea_core#release-6.0.0"
+    "phovea_core": "^6.0.0"
   },
   "name": "phovea_processing_queue",
   "description": "Process long-running tasks in the background using Celery.",
