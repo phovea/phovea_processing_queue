@@ -51,6 +51,10 @@ jobs:
           name: Show installed pip packages
           command: pip list || true
       - run:
+          name: Remove all from dist folder
+          command: |
+            rm -rf dist && mkdir dist          
+      - run:
           name: Build
           command: |
             . ~/venv/bin/activate
@@ -66,6 +70,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/.
+      - run: ls -a    
       - run:
           name: Install twine
           command: |
@@ -125,6 +130,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/.
+      - run: ls -a    
       - run:
           name: Authentication
           command:  |
